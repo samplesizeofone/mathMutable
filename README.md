@@ -3,10 +3,8 @@ Allows the creation of references to values which can change over time without r
 
 By way of example
 
-'''
-m = creatueMutable[1];
-m[]
-'''
+    m = creatueMutable[1];
+    m[]
 
 gives
 
