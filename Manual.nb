@@ -1,0 +1,842 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     26262,        833]
+NotebookOptionsPosition[     21422,        670]
+NotebookOutlinePosition[     21776,        686]
+CellTagsIndexPosition[     21733,        683]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<mathMutable`\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.63663541809629*^9, 3.636635422759625*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Notation", "Section",
+ CellChangeTimes->{{3.636647231832909*^9, 3.636647232520884*^9}}],
+
+Cell["\<\
+A sentence may span multiple lines in the case of \
+\[OpenCurlyDoubleQuote]inline\[CloseCurlyDoubleQuote] code. The beginning of \
+the sentence following it will begin with a \[Section] character. A sentence \
+spanning multiple lines should alse begin with a \[Section] character.\
+\>", "Text",
+ CellChangeTimes->{{3.636647240745747*^9, 3.636647350564739*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Motivation", "Section",
+ CellChangeTimes->{{3.636635450037685*^9, 3.6366354509819927`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["The problem", "Subsection",
+ CellChangeTimes->{{3.636635465086503*^9, 3.636635466181347*^9}}],
+
+Cell["\[Section] Image you have a large matrix", "Text",
+ CellChangeTimes->{{3.636646492014777*^9, 3.636646496581443*^9}, {
+  3.636647139512261*^9, 3.636647139709351*^9}, {3.636647172419015*^9, 
+  3.636647172421929*^9}, {3.636647323239572*^9, 3.636647323421646*^9}, {
+  3.636647392437314*^9, 3.636647392660069*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"M", "=", 
+   RowBox[{"(", GridBox[{
+      {"1", "2"},
+      {"3", "4"}
+     }], ")"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.636646497493005*^9, 3.636646504501843*^9}}],
+
+Cell["and a function", "Text",
+ CellChangeTimes->{{3.636646511750033*^9, 3.6366465129165993`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"f", "[", 
+   RowBox[{"m_", ",", 
+    RowBox[{"{", 
+     RowBox[{"x_", ",", "y_"}], "}"}]}], "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{
+   SubscriptBox["m", 
+    RowBox[{"\[LeftDoubleBracket]", 
+     RowBox[{"y", ",", "x"}], "\[RightDoubleBracket]"}]], "=", 
+   RowBox[{
+    SubscriptBox["m", 
+     RowBox[{"\[LeftDoubleBracket]", 
+      RowBox[{"y", ",", "x"}], "\[RightDoubleBracket]"}]], "+", 
+    "1"}]}]}]], "Input",
+ CellChangeTimes->{{3.636646514375596*^9, 3.636646532837216*^9}}],
+
+Cell["\[Section] In the normal course of evaluation", "Text",
+ CellChangeTimes->{{3.636646537780815*^9, 3.636646542515771*^9}, {
+   3.636647134249157*^9, 3.636647134606086*^9}, 3.636647206660799*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"f", "[", 
+  RowBox[{"M", ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6366465465293217`*^9, 3.6366465500202703`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Set", "::", "setps"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"\[NoBreak]\\!\\({\\(\\({1, 2}\\)\\), \\(\\({3, \
+4}\\)\\)}\\)\[NoBreak] in the part assignment is not a symbol. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/setps\\\", \
+ButtonNote -> \\\"Set::setps\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.636646550837892*^9}],
+
+Cell[BoxData["2"], "Output",
+ CellChangeTimes->{3.636646550843212*^9}]
+}, Open  ]],
+
+Cell["fails because M is expanded before f is applied.", "Text",
+ CellChangeTimes->{{3.6366465527389507`*^9, 3.6366465623228693`*^9}, {
+  3.636647086855953*^9, 3.636647087145001*^9}, {3.636647148015565*^9, 
+  3.6366471482525387`*^9}}],
+
+Cell["\[Section] One solution to this problem is", "Text",
+ CellChangeTimes->{{3.636646573939479*^9, 3.636646579017818*^9}, {
+   3.63664715000733*^9, 3.636647150349441*^9}, 3.636647209939948*^9}],
+
+Cell[BoxData[
+ RowBox[{"SetAttributes", "[", 
+  RowBox[{"f", ",", "HoldFirst"}], "]"}]], "Input",
+ CellChangeTimes->{{3.636646580095777*^9, 3.636646585571821*^9}}],
+
+Cell["\[Section] Now", "Text",
+ CellChangeTimes->{{3.6366465886348343`*^9, 3.636646588865922*^9}, {
+   3.636647153758482*^9, 3.636647153965437*^9}, 3.636647211730728*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"f", "[", 
+  RowBox[{"M", ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.6366465897917128`*^9, 3.636646593234787*^9}}],
+
+Cell[BoxData["2"], "Output",
+ CellChangeTimes->{3.636646596558525*^9}]
+}, Open  ]],
+
+Cell["works as expected:", "Text",
+ CellChangeTimes->{{3.636646607474012*^9, 3.636646610848737*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"M", "//", "MatrixForm"}]], "Input",
+ CellChangeTimes->{{3.6366465977408743`*^9, 3.63664660002705*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"2", "2"},
+     {"3", "4"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{3.636646600298408*^9}]
+}, Open  ]],
+
+Cell["\[Section] Now consider the case", "Text",
+ CellChangeTimes->{{3.6366466323615017`*^9, 3.636646636199889*^9}, {
+   3.636647158240316*^9, 3.63664715847742*^9}, 3.636647215268085*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"g", "[", 
+   RowBox[{"m_", ",", "h_"}], "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"Map", "[", 
+   RowBox[{"h", ",", "m", ",", 
+    RowBox[{"{", "2", "}"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.63664663712615*^9, 3.636646662727969*^9}}],
+
+Cell["\<\
+\[Section] Clearly h transforms m. But that requires allocating new memory, \
+which can be slow and becomes awkward in more complex, nested structures.\
+\>", "Text",
+ CellChangeTimes->{{3.636646674127611*^9, 3.636646703589609*^9}, {
+   3.636647161149884*^9, 3.6366471777581453`*^9}, 3.636647217476355*^9}],
+
+Cell[TextData[{
+ "Mutually recursive values are disallowed in ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ ", even though they are sometimes useful."
+}], "Text",
+ CellChangeTimes->{{3.636646382034733*^9, 3.63664643646391*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["A solution", "Subsection",
+ CellChangeTimes->{{3.6366360125367393`*^9, 3.636636013591887*^9}, 
+   3.6366362446250362`*^9}],
+
+Cell["\<\
+Mutable objects allow us to modify a value in-place without resorting to down \
+values (which are not garbage collected). Specifically, mutable objects use \
+Functions in a closure to capture garbage collected state.\
+\>", "Text",
+ CellChangeTimes->{{3.636646820985902*^9, 3.6366468819108753`*^9}}],
+
+Cell["This allows us to say", "Text",
+ CellChangeTimes->{{3.636646890343244*^9, 3.6366468942941017`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"g", "[", 
+   RowBox[{"m_", ",", "h_"}], "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"Do", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["m", 
+      RowBox[{"\[LeftDoubleBracket]", 
+       RowBox[{"y", ",", "x"}], "\[RightDoubleBracket]"}]], "=", 
+     RowBox[{"h", "[", 
+      SubscriptBox[
+       RowBox[{"m", "[", "]"}], 
+       RowBox[{"\[LeftDoubleBracket]", 
+        RowBox[{"y", ",", "x"}], "\[RightDoubleBracket]"}]], "]"}]}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{"y", ",", 
+      RowBox[{"Length", "[", 
+       RowBox[{"m", "[", "]"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", 
+      RowBox[{"Min", "[", 
+       RowBox[{"Length", "/@", 
+        RowBox[{"m", "[", "]"}]}], "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.636646896700365*^9, 3.636646969460773*^9}, {
+  3.636647011239252*^9, 3.636647031148862*^9}}],
+
+Cell["\<\
+which causes h to transform the elements of m without allocating a new matrix.\
+\>", "Text",
+ CellChangeTimes->{{3.636646974010559*^9, 3.636646991554585*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Instructions", "Section",
+ CellChangeTimes->{{3.636636839936488*^9, 3.636636841199201*^9}}],
+
+Cell["\[Section] To create a mutable object, we invoke", "Text",
+ CellChangeTimes->{{3.636636882982546*^9, 3.63663688828552*^9}, {
+  3.6366473888264713`*^9, 3.636647389476067*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myMutable", "=", 
+   RowBox[{"createMutable", "[", "\"\<hello world\>\"", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6366368894780607`*^9, 3.636636916916995*^9}, 
+   3.636647412000691*^9}],
+
+Cell["where \[OpenCurlyDoubleQuote]hello world\[CloseCurlyDoubleQuote] is the \
+value of the new mutable.", "Text",
+ CellChangeTimes->{{3.636636925132811*^9, 3.636636931715535*^9}}],
+
+Cell["\[Section] We can access the value of our mutable with", "Text",
+ CellChangeTimes->{{3.636636942220107*^9, 3.636636948627133*^9}, {
+  3.636647400238636*^9, 3.636647400883635*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636636949380529*^9, 3.636636953876848*^9}, 
+   3.636647414990799*^9}],
+
+Cell[BoxData["\<\"hello world\"\>"], "Output",
+ CellChangeTimes->{
+  3.636636954293244*^9, 3.6366371481664677`*^9, 3.636637481078466*^9, {
+   3.636637630081188*^9, 3.636637653372827*^9}, {3.636647401608653*^9, 
+   3.6366474152107077`*^9}}]
+}, Open  ]],
+
+Cell["\[Section] We can change the value of our mutable with", "Text",
+ CellChangeTimes->{{3.636636956104817*^9, 3.6366369657143307`*^9}, {
+  3.636647441227233*^9, 3.6366474414501867`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "=", "\"\<hello tyler\>\""}]], "Input",
+ CellChangeTimes->{{3.636636968690888*^9, 3.6366369759573*^9}, {
+   3.636637643826214*^9, 3.636637643997369*^9}, 3.6366474385962057`*^9}],
+
+Cell[BoxData["\<\"hello tyler\"\>"], "Output",
+ CellChangeTimes->{
+  3.6366369771016617`*^9, 3.636637148221588*^9, 3.636637349820895*^9, 
+   3.636637481128346*^9, {3.6366376301352797`*^9, 3.636637654700797*^9}, 
+   3.636647439410707*^9}]
+}, Open  ]],
+
+Cell["\[Section] Lists  can be assigned to mutables", "Text",
+ CellChangeTimes->{{3.6366369905544643`*^9, 3.6366369940813093`*^9}, {
+  3.636647480441299*^9, 3.636647480705036*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "=", 
+  RowBox[{"{", 
+   RowBox[{"1", ",", "2", ",", "3"}], "}"}]}]], "Input",
+ CellChangeTimes->{{3.636636995345932*^9, 3.6366369998982563`*^9}, {
+   3.636637624813834*^9, 3.63663762501368*^9}, 3.636647449353786*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "2", ",", "3"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.6366370005965014`*^9, 3.636637148271874*^9, 3.63663736624924*^9, 
+   3.6366374812289877`*^9, {3.6366376302310266`*^9, 3.6366376573914747`*^9}, 
+   3.6366474498163223`*^9}]
+}, Open  ]],
+
+Cell["\[Section] Those lists  can be updated in place", "Text",
+ CellChangeTimes->{{3.636637002453535*^9, 3.636637012448567*^9}, {
+  3.636647478332424*^9, 3.636647478792658*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myMutable", "[", 
+   RowBox[{"[", "3", "]"}], "]"}], "=", "\"\<mutation\>\""}]], "Input",
+ CellChangeTimes->{{3.636637013593482*^9, 3.636637039840149*^9}, 
+   3.636647467256936*^9}],
+
+Cell[BoxData["\<\"mutation\"\>"], "Output",
+ CellChangeTimes->{{3.6366370278821583`*^9, 3.636637040173623*^9}, 
+   3.636637148390012*^9, 3.636637494708308*^9, 3.636637671269483*^9, {
+   3.636647461545199*^9, 3.6366474675036507`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636637047214389*^9, 3.636637048640242*^9}, 
+   3.6366474698952637`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "2", ",", "\<\"mutation\"\>"}], "}"}]], "Output",
+ CellChangeTimes->{3.636637049006783*^9, 3.6366376727407017`*^9, 
+  3.636647470347703*^9}]
+}, Open  ]],
+
+Cell["\[Section] Mutables can be passed between functions:", "Text",
+ CellChangeTimes->{{3.636647550776066*^9, 3.636647572331493*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"someFunction", "[", 
+   RowBox[{"m_", ",", "value_"}], "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"m", "=", "value"}]}]], "Input",
+ CellChangeTimes->{{3.6366475748122272`*^9, 3.636647589188624*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"someFunction", "[", 
+  RowBox[{"myMutable", ",", 
+   RowBox[{"-", "1"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.636647603052306*^9, 3.636647614451276*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{3.636647616101953*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6366476181535673`*^9, 3.636647619348712*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{3.6366476196402082`*^9}]
+}, Open  ]],
+
+Cell["\[Section] Mutables also support associations:", "Text",
+ CellChangeTimes->{{3.636647487883545*^9, 3.636647499222927*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myAssociativeMutable", "=", 
+   RowBox[{"createMutable", "[", 
+    RowBox[{"<|", 
+     RowBox[{"1", "\[Rule]", "2"}], "|>"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.636647500896583*^9, 3.636647513279598*^9}}],
+
+Cell["\[Section] Such associations can be updated in place:", "Text",
+ CellChangeTimes->{{3.636647522793819*^9, 3.636647530653573*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myAssociativeMutable", "[", "1", "]"}], "=", "42"}]], "Input",
+ CellChangeTimes->{{3.636647531432774*^9, 3.636647542830172*^9}}],
+
+Cell[BoxData["42"], "Output",
+ CellChangeTimes->{3.636647543978099*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myAssociativeMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636647545851366*^9, 3.636647546943556*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{"1", "\[Rule]", "42"}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{3.6366475471919727`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Analysis", "Section",
+ CellChangeTimes->{{3.636636871920208*^9, 3.636636879173799*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Drawbacks", "Subsection",
+ CellChangeTimes->{{3.636636302795939*^9, 3.63663630374827*^9}}],
+
+Cell["\<\
+There are three drawbacks to using this implementation of mutables.\
+\>", "Text",
+ CellChangeTimes->{{3.636636305083919*^9, 3.6366363721778584`*^9}, {
+  3.636636599412839*^9, 3.6366365997057743`*^9}}],
+
+Cell["\<\
+\[Section] First, you must explicitly extract values from mutables using \
+empty brackets:\
+\>", "Text",
+ CellChangeTimes->{
+  3.636636601149325*^9, {3.636647639922514*^9, 3.636647676578413*^9}, 
+   3.636647889773017*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636647661900289*^9, 3.636647663514784*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{3.636647665511726*^9}]
+}, Open  ]],
+
+Cell["\<\
+\[Section] Second, if a mutable is part of a larger expression it must be \
+assigned to a symbol before it can be modified in place.\
+\>", "Text",
+ CellChangeTimes->{{3.636636391273653*^9, 3.636636408424374*^9}, {
+   3.636636609770686*^9, 3.6366366144009933`*^9}, 3.6366478919457407`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myMutableContainer", "=", 
+   RowBox[{"createMutable", "[", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", "myMutable", ",", "3"}], "}"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.636636412437427*^9, 3.636636418184923*^9}, {
+  3.636647692874733*^9, 3.636647715744372*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["myMutableContainer", 
+   RowBox[{"\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]], "=", 
+  "\"\<hi\>\""}]], "Input",
+ CellChangeTimes->{{3.6366477222324867`*^9, 3.636647734850349*^9}}],
+
+Cell[BoxData["\<\"hi\"\>"], "Output",
+ CellChangeTimes->{3.636647735100555*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutableContainer", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6366477363995113`*^9, 3.636647738168049*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "\<\"hi\"\>", ",", "3"}], "}"}]], "Output",
+ CellChangeTimes->{3.6366477384707603`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636647754940668*^9, 3.636647756103478*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{3.636647756391326*^9}]
+}, Open  ]],
+
+Cell["\<\
+\[Section] Clearly myMutable was replaced in myMutableContainer rather than \
+updated.\
+\>", "Text",
+ CellChangeTimes->{{3.636647759037774*^9, 3.636647768716476*^9}, 
+   3.636647894977577*^9}],
+
+Cell["\[Section] We can update myMutable like", "Text",
+ CellChangeTimes->{{3.6366478440729017`*^9, 3.6366478519132566`*^9}, 
+   3.6366478989283457`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Clear", "[", "myMutableContainer", "]"}]], "Input",
+ CellChangeTimes->{{3.6366477869581213`*^9, 3.636647790286275*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myMutableContainer", "=", 
+   RowBox[{"createMutable", "[", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", "myMutable", ",", "3"}], "}"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.636636412437427*^9, 3.636636418184923*^9}, {
+  3.636647692874733*^9, 3.636647715744372*^9}, {3.636647810119217*^9, 
+  3.636647810832121*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myNestedMutable", "=", 
+   SubscriptBox[
+    RowBox[{"myMutableContainer", "[", "]"}], 
+    RowBox[{"\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.6366477222324867`*^9, 3.636647734850349*^9}, {
+  3.636647799875152*^9, 3.636647813363407*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"myNestedMutable", "=", "\"\<hi\>\""}], ";"}]], "Input",
+ CellChangeTimes->{{3.63664781637962*^9, 3.636647822243609*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutableContainer", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6366477363995113`*^9, 3.636647738168049*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", 
+   RowBox[{"mutable", "[", 
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "mathMutable`Private`type$", ",", "mathMutable`Private`newValue$", ",",
+         "mathMutable`Private`partSpec$"}], "}"}], ",", 
+      RowBox[{"mathMutable`Private`applyMutable", "[", 
+       RowBox[{
+       "mathMutable`Private`type$", ",", "mathMutable`Private`state$3154", 
+        ",", "mathMutable`Private`newValue$", ",", 
+        RowBox[{"Evaluate", "[", 
+         RowBox[{"Sequence", "@@", "mathMutable`Private`partSpec$"}], "]"}]}],
+        "]"}]}], "]"}], "]"}], ",", "3"}], "}"}]], "Output",
+ CellChangeTimes->{3.6366477384707603`*^9, 3.6366478248483458`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"myMutable", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.6366478367896547`*^9, 3.636647838084499*^9}}],
+
+Cell[BoxData["\<\"hi\"\>"], "Output",
+ CellChangeTimes->{3.6366478383674393`*^9}]
+}, Open  ]],
+
+Cell["\<\
+\[Section] Third, performance may suffer as we are adding down values for Set.\
+\>", "Text",
+ CellChangeTimes->{{3.6366366208567667`*^9, 3.6366366301276007`*^9}, 
+   3.636647909875044*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Future improvements", "Subsection",
+ CellChangeTimes->{{3.636636656919608*^9, 3.6366366637582483`*^9}}],
+
+Cell["It is possible to mitigate some of these drawbacks.", "Text",
+ CellChangeTimes->{{3.6366366646858883`*^9, 3.636636688532789*^9}}],
+
+Cell["\<\
+\[Section] Down values might be added to set to take into account expressions \
+like:\
+\>", "Text",
+ CellChangeTimes->{{3.636636690012883*^9, 3.636636706527832*^9}, 
+   3.636647915451137*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"myMutable", "[", "]"}], "[", 
+   RowBox[{"[", "2", "]"}], "]"}], "=", "11"}]], "Input",
+ CellChangeTimes->{{3.636636709428541*^9, 3.6366367173595657`*^9}}],
+
+Cell["\<\
+\[Section] Additional extraction operations could be added. For instance, a \
+function that extracts all mutables in an expression repeatedly.\
+\>", "Text",
+ CellChangeTimes->{{3.636636722163672*^9, 3.636636784593135*^9}, {
+  3.6366479181875153`*^9, 3.63664792345402*^9}}],
+
+Cell["\[Section] Thus", "Text",
+ CellChangeTimes->{{3.636647924582019*^9, 3.636647925760469*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"myMutable", "[", "]"}], "[", 
+   RowBox[{"[", "2", "]"}], "]"}], "[", "]"}]], "Input",
+ CellChangeTimes->{{3.636636785587098*^9, 3.6366367892899*^9}}],
+
+Cell["becomes", "Text",
+ CellChangeTimes->{{3.636636791808627*^9, 3.6366367923850403`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"extractAll", "[", 
+  RowBox[{"myMutable", "[", 
+   RowBox[{"[", "2", "]"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6366367938672123`*^9, 3.6366368016012783`*^9}}],
+
+Cell["\<\
+\[Section] Note, this can be dangerous if there is mutual recursion among \
+mutables. There are likely ways to prevent infinite expansion.\
+\>", "Text",
+ CellChangeTimes->{{3.6366464543198853`*^9, 3.636646478406303*^9}, 
+   3.636647928666613*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell["Internals", "Section",
+ CellChangeTimes->{{3.636636836920245*^9, 3.63663683788735*^9}}]
+},
+WindowSize->{808, 715},
+WindowMargins->{{99, Automatic}, {Automatic, 41}},
+FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
+2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 142, 2, 28, "Input"],
+Cell[CellGroupData[{
+Cell[725, 26, 93, 1, 64, "Section"],
+Cell[821, 29, 370, 6, 49, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1228, 40, 97, 1, 64, "Section"],
+Cell[CellGroupData[{
+Cell[1350, 45, 99, 1, 44, "Subsection"],
+Cell[1452, 48, 315, 4, 30, "Text"],
+Cell[1770, 54, 206, 7, 47, "Input"],
+Cell[1979, 63, 98, 1, 30, "Text"],
+Cell[2080, 66, 526, 15, 49, "Input"],
+Cell[2609, 83, 199, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[2833, 89, 196, 5, 28, "Input"],
+Cell[3032, 96, 486, 10, 24, "Message"],
+Cell[3521, 108, 70, 1, 28, "Output"]
+}, Open  ]],
+Cell[3606, 112, 234, 3, 30, "Text"],
+Cell[3843, 117, 195, 2, 30, "Text"],
+Cell[4041, 121, 163, 3, 28, "Input"],
+Cell[4207, 126, 170, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[4402, 132, 194, 5, 28, "Input"],
+Cell[4599, 139, 70, 1, 28, "Output"]
+}, Open  ]],
+Cell[4684, 143, 100, 1, 30, "Text"],
+Cell[CellGroupData[{
+Cell[4809, 148, 126, 2, 28, "Input"],
+Cell[4938, 152, 627, 18, 58, "Output"]
+}, Open  ]],
+Cell[5580, 173, 187, 2, 30, "Text"],
+Cell[5770, 177, 281, 7, 46, "Input"],
+Cell[6054, 186, 315, 5, 49, "Text"],
+Cell[6372, 193, 234, 6, 30, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6643, 204, 128, 2, 44, "Subsection"],
+Cell[6774, 208, 308, 5, 49, "Text"],
+Cell[7085, 215, 105, 1, 30, "Text"],
+Cell[7193, 218, 995, 27, 127, "Input"],
+Cell[8191, 247, 168, 3, 30, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8408, 256, 97, 1, 64, "Section"],
+Cell[8508, 259, 180, 2, 30, "Text"],
+Cell[8691, 263, 231, 6, 28, "Input"],
+Cell[8925, 271, 181, 2, 30, "Text"],
+Cell[9109, 275, 185, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[9319, 281, 149, 3, 28, "Input"],
+Cell[9471, 286, 239, 4, 28, "Output"]
+}, Open  ]],
+Cell[9725, 293, 189, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[9939, 299, 213, 3, 28, "Input"],
+Cell[10155, 304, 237, 4, 28, "Output"]
+}, Open  ]],
+Cell[10407, 311, 180, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[10612, 317, 253, 5, 28, "Input"],
+Cell[10868, 324, 279, 6, 28, "Output"]
+}, Open  ]],
+Cell[11162, 333, 178, 2, 30, "Text"],
+Cell[CellGroupData[{
+Cell[11365, 339, 216, 5, 28, "Input"],
+Cell[11584, 346, 233, 3, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11854, 354, 151, 3, 28, "Input"],
+Cell[12008, 359, 189, 4, 28, "Output"]
+}, Open  ]],
+Cell[12212, 366, 134, 1, 30, "Text"],
+Cell[12349, 369, 237, 5, 46, "Input"],
+Cell[CellGroupData[{
+Cell[12611, 378, 181, 4, 28, "Input"],
+Cell[12795, 384, 87, 2, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12919, 391, 125, 2, 28, "Input"],
+Cell[13047, 395, 89, 2, 28, "Output"]
+}, Open  ]],
+Cell[13151, 400, 128, 1, 30, "Text"],
+Cell[13282, 403, 252, 6, 28, "Input"],
+Cell[13537, 411, 135, 1, 30, "Text"],
+Cell[CellGroupData[{
+Cell[13697, 416, 163, 3, 28, "Input"],
+Cell[13863, 421, 71, 1, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13971, 427, 134, 2, 28, "Input"],
+Cell[14108, 431, 159, 3, 28, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14316, 440, 93, 1, 64, "Section"],
+Cell[CellGroupData[{
+Cell[14434, 445, 96, 1, 44, "Subsection"],
+Cell[14533, 448, 210, 4, 30, "Text"],
+Cell[14746, 454, 231, 6, 30, "Text"],
+Cell[CellGroupData[{
+Cell[15002, 464, 123, 2, 28, "Input"],
+Cell[15128, 468, 87, 2, 28, "Output"]
+}, Open  ]],
+Cell[15230, 473, 298, 5, 49, "Text"],
+Cell[15531, 480, 312, 8, 28, "Input"],
+Cell[CellGroupData[{
+Cell[15868, 492, 231, 5, 33, "Input"],
+Cell[16102, 499, 79, 1, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16218, 505, 134, 2, 28, "Input"],
+Cell[16355, 509, 136, 3, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16528, 517, 123, 2, 28, "Input"],
+Cell[16654, 521, 87, 2, 28, "Output"]
+}, Open  ]],
+Cell[16756, 526, 202, 5, 30, "Text"],
+Cell[16961, 533, 153, 2, 30, "Text"],
+Cell[17117, 537, 143, 2, 28, "Input"],
+Cell[17263, 541, 361, 9, 28, "Input"],
+Cell[17627, 552, 330, 8, 32, "Input"],
+Cell[17960, 562, 155, 3, 28, "Input"],
+Cell[CellGroupData[{
+Cell[18140, 569, 134, 2, 28, "Input"],
+Cell[18277, 573, 735, 17, 97, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19049, 595, 125, 2, 28, "Input"],
+Cell[19177, 599, 81, 1, 28, "Output"]
+}, Open  ]],
+Cell[19273, 603, 198, 4, 30, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19508, 612, 109, 1, 44, "Subsection"],
+Cell[19620, 615, 135, 1, 30, "Text"],
+Cell[19758, 618, 201, 5, 30, "Text"],
+Cell[19962, 625, 202, 5, 28, "Input"],
+Cell[20167, 632, 282, 5, 49, "Text"],
+Cell[20452, 639, 97, 1, 30, "Text"],
+Cell[20552, 642, 197, 5, 28, "Input"],
+Cell[20752, 649, 91, 1, 30, "Text"],
+Cell[20846, 652, 193, 4, 28, "Input"],
+Cell[21042, 658, 256, 5, 49, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[21325, 667, 93, 1, 64, "Section"]
+}
+]
+*)
+
+(* End of internal cache information *)
